@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Color Block</title>
+	<title>Color Blocks</title>
 	<style>
-		#color-block {
+		.color-block {
 			width: 200px;
 			height: 200px;
 			background-color: #000000;
-			margin: 0 auto;
+			margin: 0 10px;
+			float: left;
 		}
-		#color-input {
+		.color-input {
 			width: 100%;
 			height: 30px;
 			font-size: 16px;
@@ -17,35 +18,84 @@
 			box-sizing: border-box;
 			border: none;
 			border-radius: 5px;
-			margin-top: 10px;
+			margin-top: 100%;
 			text-align: center;
+		}
+		.add-block-btn {
+			width: 75px;
+			height: 75px;
+			text-align: center;
+			font-size: 50px;
+			margin: 60px;
+		}
+		.clearfix {
+			clear: both;
 		}
 	</style>
 </head>
 <body>
-	<div id="color-block"></div>
-	<input type="text" id="color-input" placeholder="Enter a hex color value...">
+	<div class="color-block">
+		<input type="text" class="color-input" placeholder="Enter a hex color value...">
+	</div>
+	<button id="add-block-btn" class="add-block-btn">+</button>
+	<div class="clearfix"></div>
+
 	<script>
-		const colorBlock = document.getElementById("color-block");
-		const colorInput = document.getElementById("color-input");
+		const addBlockBtn = document.getElementById("add-block-btn");
+		addBlockBtn.addEventListener("click", () => {
+			// Create new elements
+			const colorBlock = document.createElement("div");
+			const colorInput = document.createElement("input");
 
-		// Retrieve the saved hex color value from localStorage, if it exists
-		const savedHexValue = localStorage.getItem("hexValue");
-		if (savedHexValue) {
-			colorBlock.style.backgroundColor = savedHexValue;
-			colorInput.value = savedHexValue;
-		}
+			// Set class and attributes for new elements
+			colorBlock.className = "color-block";
+			colorBlock.style.backgroundColor = "#000000";
+			colorInput.className = "color-input";
+			colorInput.placeholder = "Enter a hex color value...";
 
-		colorInput.addEventListener("input", () => {
-			const hexValue = colorInput.value;
-			if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
-				colorBlock.style.backgroundColor = hexValue;
-				localStorage.setItem("hexValue", hexValue);
-			} else {
-				colorBlock.style.backgroundColor = "#000000";
-				localStorage.removeItem("hexValue");
-			}
+			// Insert new elements into the DOM
+			document.body.insertBefore(colorBlock, addBlockBtn);
+			colorBlock.appendChild(colorInput);
+
+			// Add event listener for new input element
+			colorInput.addEventListener("input", () => {
+				const hexValue = colorInput.value;
+				if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
+					colorBlock.style.backgroundColor = hexValue;
+					localStorage.setItem("colorBlock" + document.querySelectorAll(".color-block").length + "HexValue", hexValue);
+				} else {
+					colorBlock.style.backgroundColor = "#000000";
+					localStorage.removeItem("colorBlock" + document.querySelectorAll(".color-block").length + "HexValue");
+				}
+			});
 		});
+
+		// Initialize existing color blocks
+		const colorBlocks = document.querySelectorAll(".color-block");
+		const colorInputs = document.querySelectorAll(".color-input");
+		for (let i = 0; i < colorBlocks.length; i++) {
+			const colorBlock = colorBlocks[i];
+			const colorInput = colorInputs[i];
+
+			// Retrieve the saved hex color value from localStorage, if it exists
+			const savedHexValue = localStorage.getItem("colorBlock" + (i + 1) + "HexValue");
+			if (savedHexValue) {
+				colorBlock.style.backgroundColor = savedHexValue;
+				colorInput.value = savedHexValue;
+			}
+
+			// Add event listener for existing input element
+			colorInput.addEventListener("input", () => {
+				const hexValue = colorInput.value;
+				if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
+					colorBlock.style.backgroundColor = hexValue;
+					localStorage.setItem("colorBlock" + (i + 1) + "HexValue", hexValue);
+				} else {
+					colorBlock.style.backgroundColor = "#000000";
+					localStorage.removeItem("colorBlock" + (i + 1) + "HexValue");
+				}
+			});
+		}
 	</script>
 </body>
 </html>
