@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Color Block</title>
+	<style>
+		#color-block {
+			width: 200px;
+			height: 200px;
+			background-color: #000000;
+			margin: 0 auto;
+		}
+		#color-input {
+			width: 100%;
+			height: 30px;
+			font-size: 16px;
+			padding: 5px;
+			box-sizing: border-box;
+			border: none;
+			border-radius: 5px;
+			margin-top: 10px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="color-block"></div>
+	<input type="text" id="color-input" placeholder="Enter a hex color value...">
+	<script>
+		const colorBlock = document.getElementById("color-block");
+		const colorInput = document.getElementById("color-input");
+
+		colorInput.addEventListener("input", () => {
+			const hexValue = colorInput.value;
+			if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
+				colorBlock.style.backgroundColor = hexValue;
+			}
+		});
+	</script>
+</body>
+</html>
