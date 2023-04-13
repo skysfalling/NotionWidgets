@@ -29,10 +29,21 @@
 		const colorBlock = document.getElementById("color-block");
 		const colorInput = document.getElementById("color-input");
 
+		// Retrieve the saved hex color value from localStorage, if it exists
+		const savedHexValue = localStorage.getItem("hexValue");
+		if (savedHexValue) {
+			colorBlock.style.backgroundColor = savedHexValue;
+			colorInput.value = savedHexValue;
+		}
+
 		colorInput.addEventListener("input", () => {
 			const hexValue = colorInput.value;
 			if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
 				colorBlock.style.backgroundColor = hexValue;
+				localStorage.setItem("hexValue", hexValue);
+			} else {
+				colorBlock.style.backgroundColor = "#000000";
+				localStorage.removeItem("hexValue");
 			}
 		});
 	</script>
