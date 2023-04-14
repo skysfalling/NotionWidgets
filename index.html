@@ -2,56 +2,7 @@
 <html>
 <head>
 	<title>Color Blocks</title>
-	<style>
-		.color-block {
-			width: 200px;
-			height: 200px;
-			background-color: #000000;
-			margin: 0 10px;
-			float: left;
-			cursor: pointer; /* Add cursor pointer to indicate clickability */
-		}
-
-		/* Set up the showcase */
-		.showcase {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			width: 400px;
-			height: 400px;
-			border-radius: 5px;
-			display: none; /* Initially hide the showcase */
-			z-index: 1;
-		}
-		.showcase-color {
-			width: 100%;
-			height: 100%;
-			border-radius: 5px;
-		}
-
-		.color-input {
-			width: 100%;
-			height: 30px;
-			font-size: 16px;
-			padding: 5px;
-			box-sizing: border-box;
-			border: none;
-			border-radius: 5px;
-			margin-top: 100%;
-			text-align: center;
-		}
-		.add-block-btn {
-			width: 75px;
-			height: 75px;
-			text-align: center;
-			font-size: 50px;
-			margin: 60px;
-		}
-		.clearfix {
-			clear: both;
-		}
-	</style>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<!-- Add a showcase div -->
@@ -59,108 +10,10 @@
 			<div class="showcase-color"></div>
 	</div>
 
-	<!-- Add the color block and input divs -->
-	<div class="color-block">
-		<input type="text" class="color-input" placeholder="Enter a hex color value...">
-	</div>
 	<button id="add-block-btn" class="add-block-btn">+</button>
 	<div class="clearfix"></div>
 
-	<script>
-		const addBlockBtn = document.getElementById("add-block-btn");
-		addBlockBtn.addEventListener("click", () => {
-			// Create new elements
-			const colorBlock = document.createElement("div");
-			const colorInput = document.createElement("input");
+	<script src="script.js"></script>
 
-			// Set class and attributes for new elements
-			colorBlock.className = "color-block";
-			colorBlock.style.backgroundColor = "#000000";
-			colorInput.className = "color-input";
-			colorInput.placeholder = "Enter a hex color value...";
-
-			// Insert new elements into the DOM
-			document.body.insertBefore(colorBlock, addBlockBtn);
-			colorBlock.appendChild(colorInput);
-
-			// Add event listener for new input element
-			colorInput.addEventListener("input", () => {
-				const hexValue = colorInput.value;
-				if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
-					colorBlock.style.backgroundColor = hexValue;
-					localStorage.setItem("colorBlock" + document.querySelectorAll(".color-block").length + "HexValue", hexValue);
-				} else {
-					colorBlock.style.backgroundColor = "#000000";
-					localStorage.removeItem("colorBlock" + document.querySelectorAll(".color-block").length + "HexValue");
-				}
-			});
-
-			// Add event listener for new color block element
-			colorBlock.addEventListener("click", () => {
-				const showcase = document.querySelector(".showcase");
-				const showcaseColor = document.querySelector(".showcase-color");
-				// Add event listener for showcase color block element
-				colorBlock.addEventListener("click", () => {
-					const showcase = document.querySelector(".showcase");
-					const showcaseColor = document.querySelector(".showcase-color");
-
-					// Set showcase color to match clicked color block
-					showcaseColor.style.backgroundColor = colorBlock.style.backgroundColor;
-
-					// Show showcase
-					showcase.style.display = "block";
-
-					// Add event listener for showcase to hide on click
-					showcase.addEventListener("click", () => {
-						showcase.style.display = "none";
-					});
-				});
-			});
-			
-			// Initialize existing color blocks
-			const colorBlocks = document.querySelectorAll(".color-block");
-			const colorInputs = document.querySelectorAll(".color-input");
-			for (let i = 0; i < colorBlocks.length; i++) {
-				const colorBlock = colorBlocks[i];
-				const colorInput = colorInputs[i];
-
-				// Retrieve the saved hex color value from localStorage, if it exists
-				const savedHexValue = localStorage.getItem("colorBlock" + (i + 1) + "HexValue");
-				if (savedHexValue) {
-					colorBlock.style.backgroundColor = savedHexValue;
-					colorInput.value = savedHexValue;
-				}
-
-				// Add event listener for existing input element
-				colorInput.addEventListener("input", () => {
-					const hexValue = colorInput.value;
-					if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
-						colorBlock.style.backgroundColor = hexValue;
-						localStorage.setItem("colorBlock" + (i + 1) + "HexValue", hexValue);
-					} else {
-						colorBlock.style.backgroundColor = "#000000";
-						localStorage.removeItem("colorBlock" + (i + 1) + "HexValue");
-					}
-				});
-
-				// Add event listener for existing color block element
-				colorBlock.addEventListener("click", () => {
-					const showcase = document.querySelector(".showcase");
-					const showcaseColor = document.querySelector(".showcase-color");
-
-					// Set showcase color to match clicked color block
-					showcaseColor.style.backgroundColor = colorBlock.style.backgroundColor;
-
-					// Show showcase
-					showcase.style.display = "block";
-
-					// Add event listener for showcase to hide on click
-					showcase.addEventListener("click", () => {
-						showcase.style.display = "none";
-					});
-				});
-			}
-		});
-	</script>
 </body>
 </html>
